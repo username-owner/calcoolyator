@@ -1,146 +1,198 @@
-<link rel="manifest" href="manifest.json">
 <!DOCTYPE html>
-<html>
-    <head>
-        <title> Раскладка грид</title>
-        <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<link rel="manifest" href="manifest.json">
-        
-           
-<script type="text/javascript">
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('serviceworker.js')
-                .then(function(registration) {
-                    console.log('Registration successful, scope is:', registration.scope);
-                })
-                .catch(function(error) {
-                    console.log('Service worker registration failed, error:', error);
-                });
-            }
-</script>
-<link rel="stylesheet" href="style.css">
-<script>
-	window.onload=Load; // Повесили обработчик на загрузку окна
-	let currDeistv = "";// Обьявление переменных
-	let Arg=0;
-	let Memory=0;
-	function Load()
-	{
-		let elements = document.querySelectorAll(".bnum");
-		// Получить набор элементов, которые удовлетворяют условию
-		for (let i = 0; i < elements.length; i++) {
-			elements[i].onclick=NumClick; // Вешаю обработчки каждому элементу
-		}
-		// Применить для каждого элемента метод
-		elements = document.querySelectorAll(".deist");
-		for (let i = 0; i < elements.length; i++) {
-			elements[i].onclick=DeistClick; // Вешаю обработчки каждому элементу
-		}
-
-		elements = document.querySelectorAll(".func");
-		for (let i = 0; i < elements.length; i++) {
-			elements[i].onclick=FuncClick; // Вешаю обработчки каждому элементу
-		}
-
-		let ravno = document.querySelector(".beq");
-		ravno.onclick=RavnoClick;
-	}
-	function FuncClick()
-	{
-		let element = this; // Получили элемент создавший событие
-		let deist = element.innerHTML;
-		let screen = document.querySelector(".screen"); 
-		if(deist=="C")
-		{
-			screen.innerHTML="";
-			currDeistv="";
-			Arg=0;
-		}
-		if(deist=="CE")
-		{
-			screen.innerHTML="";
-		}
-		if (deist=="MS")
-		{
-			Memory = screen.innerHTML;
-		}
-		if (deist=="MR")
-		{
-			screen.innerHTML=Memory;
-		}
-	}
-	function RavnoClick()
-	{
-		if(currDeistv!="")
-		{
-			let screen = document.querySelector(".screen"); // Получает экран
-			let Brg = screen.innerHTML;
-			Arg = Number(Arg);
-			Brg = Number(Brg);
-			let res=0;
-			if(currDeistv=="+")
-			{
-				res = Arg+Brg;
-			}else if (currDeistv=="-")
-			{
-				res = Arg-Brg;
-			}else if (currDeistv=="*")
-			{
-				res = Arg*Brg;
-			}else if (currDeistv=="/")
-			{
-				res = Arg/Brg;
-			}
-			screen.innerHTML=res;
-		}
-	}
-	function DeistClick()
-	{
-		let element = this;
-		let deist = element.innerHTML;
-		currDeistv=deist;
-		let screen = document.querySelector(".screen"); // Получает экран
-		Arg=screen.innerHTML; // И кладем туда num
-		screen.innerHTML="";
-	}
-	function NumClick() // Обработчик нажатия
-	{
-		let butPressed = this;// this - ссылка на элемент создавший событие
-		let num = butPressed.innerHTML; // Берет с кнопки циферку на ней
-		let screen = document.querySelector(".screen"); // Получает экран
-		screen.innerHTML=screen.innerHTML+num; // И кладем туда num
-	}
-</script>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ffffff">
+    <title>Калькулятор PWA</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #installContainer {
+            text-align: center;
+            margin: 10px 0;
+        }
+        #installButton {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+        .container {
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        .screen {
+            background: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: right;
+            font-size: 24px;
+            min-height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .button {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            line-height: 60px;
+            text-align: center;
+            background: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .button:hover {
+            background: #d0d0d0;
+        }
+        .deist {
+            background: #f0a050;
+        }
+        .func {
+            background: #a0a0a0;
+            color: white;
+        }
+    </style>
 </head>
-		<body>
-			<div class="container">
-				<div class="screen"></div>
-				
-				<div class="button b1 bnum">1</div>
-				<div class="button b2 bnum">2</div>
-				<div class="button b3 bnum">3</div>
-				<div class="button b4 bnum">4</div>
-				<div class="button b5 bnum">5</div>
-				<div class="button b6 bnum">6</div>
-				<div class="button b7 bnum">7</div>
-				<div class="button b8 bnum">8</div>
-				
-				<div class="button b9 bnum">9</div>
-				<div class="button b0 bnum">0</div>
-				
-				<div class="button deist bplus">+</div>
-				<div class="button deist bmin">-</div>
-				<div class="button beq">=</div>
-				<div class="button deist bmul">*</div>
-				<div class="button deist bdiv">/</div>
-				<div class="button bpoint">.</div>
+<body>
+    <div id="installContainer">
+        <button id="installButton">Установить калькулятор</button>
+    </div>
+    
+    <div class="container">
+        <div class="screen"></div>
+        
+        <div class="button b1 bnum">1</div>
+        <div class="button b2 bnum">2</div>
+        <div class="button b3 bnum">3</div>
+        <div class="button b4 bnum">4</div>
+        <div class="button b5 bnum">5</div>
+        <div class="button b6 bnum">6</div>
+        <div class="button b7 bnum">7</div>
+        <div class="button b8 bnum">8</div>
+        
+        <div class="button b9 bnum">9</div>
+        <div class="button b0 bnum">0</div>
+        
+        <div class="button deist bplus">+</div>
+        <div class="button deist bmin">-</div>
+        <div class="button beq">=</div>
+        <div class="button deist bmul">*</div>
+        <div class="button deist bdiv">/</div>
+        <div class="button bpoint">.</div>
 
-				<div class="button func bC">C</div>
-				<div class="button func bCE">CE</div>
-				<div class="button func bMS">MS</div>
-				<div class="button func bMR">MR</div>
-				
-			</div>
-		</body>
+        <div class="button func bC">C</div>
+        <div class="button func bCE">CE</div>
+        <div class="button func bMS">MS</div>
+        <div class="button func bMR">MR</div>
+    </div>
+
+    <script>
+        // Калькулятор
+        window.onload = Load;
+        let currDeistv = "";
+        let Arg = 0;
+        let Memory = 0;
+        
+        function Load() {
+            document.querySelectorAll(".bnum").forEach(el => el.onclick = NumClick);
+            document.querySelectorAll(".deist").forEach(el => el.onclick = DeistClick);
+            document.querySelectorAll(".func").forEach(el => el.onclick = FuncClick);
+            document.querySelector(".beq").onclick = RavnoClick;
+        }
+        
+        function FuncClick() {
+            let deist = this.innerHTML;
+            let screen = document.querySelector(".screen");
+            
+            if(deist == "C") {
+                screen.innerHTML = "";
+                currDeistv = "";
+                Arg = 0;
+            }
+            if(deist == "CE") {
+                screen.innerHTML = "";
+            }
+            if(deist == "MS") {
+                Memory = screen.innerHTML;
+            }
+            if(deist == "MR") {
+                screen.innerHTML = Memory;
+            }
+        }
+        
+        function RavnoClick() {
+            if(currDeistv != "") {
+                let screen = document.querySelector(".screen");
+                let Brg = Number(screen.innerHTML);
+                Arg = Number(Arg);
+                let res = 0;
+                
+                switch(currDeistv) {
+                    case "+": res = Arg + Brg; break;
+                    case "-": res = Arg - Brg; break;
+                    case "*": res = Arg * Brg; break;
+                    case "/": res = Arg / Brg; break;
+                }
+                
+                screen.innerHTML = res;
+            }
+        }
+        
+        function DeistClick() {
+            currDeistv = this.innerHTML;
+            let screen = document.querySelector(".screen");
+            Arg = screen.innerHTML;
+            screen.innerHTML = "";
+        }
+        
+        function NumClick() {
+            let num = this.innerHTML;
+            let screen = document.querySelector(".screen");
+            screen.innerHTML += num;
+        }
+
+        // PWA Installation
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.style.display = 'block';
+        });
+        
+        installButton.addEventListener('click', async () => {
+            if(deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if(outcome === 'accepted') {
+                    installButton.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+        
+        // Service Worker Registration
+        if('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('serviceworker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker успешно зарегистрирован:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Ошибка регистрации ServiceWorker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
 </html>
